@@ -2,10 +2,10 @@ const express=require("express")
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
 const { UserModel } = require("../Model/userModel");
-// const { blacklist } = require("../Blacklisting");
+
 const { auth } = require("../Middleware/auth");
 const { blacklist } = require("../Blacklisting");
-// const { blacklist } = require("../Blacklisting");
+require("dotenv").config()
 
 
 const userroutes=express.Router()
@@ -63,7 +63,7 @@ userroutes.post("/login", async (req, res) => {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      const token = jwt.sign({ userId: user._id }, "masai", {
+      const token = jwt.sign({ userId: user._id },process.env.secret_key, {
         expiresIn: "1h"
       });
       return res.status(200).json({ token });
